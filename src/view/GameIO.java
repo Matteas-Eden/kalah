@@ -20,17 +20,26 @@ public class GameIO {
 
         List<Player> players = board.getPlayers();
 
-
         io.println("+----+-------+-------+-------+-------+-------+-------+----+");
 
-        ListIterator<Player> itr = players.listIterator(players.size());
-        int playerCount = players.size();
+//        ListIterator<Player> itr = players.listIterator(players.size());
+//        int playerCount = players.size();
+//
+//        while (itr.hasPrevious()) {
+//
+//            io.println("|    |-------+-------+-------+-------+-------+-------|    |");
+//        }
 
-        while (itr.hasPrevious()) {
-            io.println("|    |-------+-------+-------+-------+-------+-------|    |");
+        io.println("+----+-------+-------+-------+-------+-------+-------+----+");
+    }
+
+    public static void printGameResult(List<Player> players, IO io) {
+        Player winner = players.get(0);
+        for (Player player : players) {
+            io.println(String.format("\tplayer %d:%d", players.indexOf(player) + 1, player.getStore().getSeeds()));
+            if (player.getStore().getSeeds() > winner.getStore().getSeeds()) winner = player;
         }
-
-        io.println("+----+-------+-------+-------+-------+-------+-------+----+");
+        io.println(String.format("Player %d wins!", players.indexOf(winner)));
     }
 
     public static String formatHousesAsString(List<Pit> houses, boolean reverse) {
