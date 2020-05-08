@@ -12,7 +12,7 @@ public class Player {
         for (int i = 0; i < numHouses; i++) {
             this.houses.add(new Pit(GameConfig.STARTING_SEEDS));
         }
-        this.store = new Pit(GameConfig.STARTING_SEEDS);
+        this.store = new Pit(0);
     }
 
     public List<Pit> getHouses() {
