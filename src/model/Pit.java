@@ -12,9 +12,13 @@ public class Pit {
         return seeds;
     }
 
-    public void setSeeds(int seeds) {
-        this.seeds = seeds;
+    public void clearSeeds() {
+        this.seeds = 0;
     }
+
+    public void incrementSeeds() { this.seeds++; }
+
+    public void incrementSeeds(int amount) { this.seeds += amount; }
 
     public boolean isEmpty() {
         return seeds == 0;
