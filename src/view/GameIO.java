@@ -16,19 +16,25 @@ public class GameIO {
         return input.equals("q") ? -1:Integer.parseInt(input);
     }
 
+    // TODO: Refactor HEAVILY
+    //  Specifically need to ensure the output scales for N houses
     public static void printBoard(Board board, IO io) {
 
         List<Player> players = board.getPlayers();
 
+        String p1Store = (players.get(0).getStore().getSeeds() > 9) ?
+                String.format(" %d |", players.get(0).getStore().getSeeds()) :
+                String.format("  %d |", players.get(0).getStore().getSeeds());
+
+        String p2Store = (players.get(1).getStore().getSeeds() > 9) ?
+                String.format("| %d ", players.get(1).getStore().getSeeds()) :
+                String.format("|  %d ", players.get(1).getStore().getSeeds());
+
         io.println("+----+-------+-------+-------+-------+-------+-------+----+");
 
-//        ListIterator<Player> itr = players.listIterator(players.size());
-//        int playerCount = players.size();
-//
-//        while (itr.hasPrevious()) {
-//
-//            io.println("|    |-------+-------+-------+-------+-------+-------|    |");
-//        }
+        io.println("| P2 " + formatHousesAsString(players.get(1).getHouses(), true) + p1Store);
+        io.println("|    |-------+-------+-------+-------+-------+-------|    |");
+        io.println(p2Store + formatHousesAsString(players.get(0).getHouses(), false) + " P1 |");
 
         io.println("+----+-------+-------+-------+-------+-------+-------+----+");
     }
@@ -43,9 +49,9 @@ public class GameIO {
     }
 
     public static String formatHousesAsString(List<Pit> houses, boolean reverse) {
-        StringBuilder out = new StringBuilder("| ");
+        StringBuilder out = new StringBuilder("|");
         for (Pit house : houses) {
-            out.append(String.format("%d[ %d] |", reverse ? houses.size() - houses.indexOf(house):houses.indexOf(house),
+            out.append(String.format(" %d[ %d] |", reverse ? houses.size() - houses.indexOf(house):houses.indexOf(house) + 1,
                     house.getSeeds()));
         }
         return out.toString();
