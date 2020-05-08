@@ -1,14 +1,18 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
     private List<Pit> houses;
     private Pit store;
 
-    public Player(List<Pit> houses, Pit store) {
-        this.houses = houses;
-        this.store = store;
+    public Player(int numHouses) {
+        this.houses = new ArrayList<>();
+        for (int i = 0; i < numHouses; i++) {
+            this.houses.add(new Pit(GameConfig.STARTING_SEEDS));
+        }
+        this.store = new Pit(GameConfig.STARTING_SEEDS);
     }
 
     public List<Pit> getHouses() {
@@ -25,4 +29,5 @@ public class Player {
         }
         return true;
     }
+
 }
