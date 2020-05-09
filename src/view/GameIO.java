@@ -23,7 +23,7 @@ public class GameIO {
 
         List<Player> players = board.getPlayers();
 
-        String p1Store = String.format(" %2d |i", players.get(0).getStore().getSeeds());
+        String p1Store = String.format(" %2d |", players.get(0).getStore().getSeeds());
 
         String p2Store = String.format("| %2d ", players.get(1).getStore().getSeeds());
 
@@ -45,12 +45,23 @@ public class GameIO {
         io.println(String.format("Player %d wins!", players.indexOf(winner)));
     }
 
-    public static String formatHousesAsString(List<Pit> houses, boolean reverse) {
+    /*
+    * Constructing a string for the houses for printing the board
+    * Needs to print out one player from left to right, and the other player from right to left
+    */
+    public static String formatHousesAsString(List<Pit> houses, boolean isPlayerTwo) {
         StringBuilder out = new StringBuilder("|");
-        if (reverse) Collections.reverse(houses);
-        for (Pit house : houses) {
-            out.append(String.format(" %d[%2d] |", reverse ? houses.size() - houses.indexOf(house):houses.indexOf(house) + 1,
-                    house.getSeeds()));
+        if (!isPlayerTwo) {
+            for (Pit house : houses) {
+                out.append(String.format(" %d[%2d] |", houses.indexOf(house) + 1,
+                        house.getSeeds()));
+            }
+        }
+        else {
+            for (int i = houses.size(); i > 0; i--) {
+                out.append(String.format(" %d[%2d] |", i,
+                        houses.get(i-1).getSeeds()));
+            }
         }
         return out.toString();
     }
