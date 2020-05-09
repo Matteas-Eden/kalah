@@ -5,6 +5,7 @@ import model.Board;
 import model.Pit;
 import model.Player;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -22,13 +23,9 @@ public class GameIO {
 
         List<Player> players = board.getPlayers();
 
-        String p1Store = (players.get(0).getStore().getSeeds() > 9) ?
-                String.format(" %d |", players.get(0).getStore().getSeeds()) :
-                String.format("  %d |", players.get(0).getStore().getSeeds());
+        String p1Store = String.format(" %2d |i", players.get(0).getStore().getSeeds());
 
-        String p2Store = (players.get(1).getStore().getSeeds() > 9) ?
-                String.format("| %d ", players.get(1).getStore().getSeeds()) :
-                String.format("|  %d ", players.get(1).getStore().getSeeds());
+        String p2Store = String.format("| %2d ", players.get(1).getStore().getSeeds());
 
         io.println("+----+-------+-------+-------+-------+-------+-------+----+");
 
@@ -50,8 +47,9 @@ public class GameIO {
 
     public static String formatHousesAsString(List<Pit> houses, boolean reverse) {
         StringBuilder out = new StringBuilder("|");
+        if (reverse) Collections.reverse(houses);
         for (Pit house : houses) {
-            out.append(String.format(" %d[ %d] |", reverse ? houses.size() - houses.indexOf(house):houses.indexOf(house) + 1,
+            out.append(String.format(" %d[%2d] |", reverse ? houses.size() - houses.indexOf(house):houses.indexOf(house) + 1,
                     house.getSeeds()));
         }
         return out.toString();
