@@ -56,7 +56,7 @@ public class GameIO {
             io.println(String.format("\tplayer %d:%d", players.indexOf(player) + 1, player.getStore().getSeeds()));
             if (player.getStore().getSeeds() > winner.getStore().getSeeds()) winner = player;
         }
-        io.println(String.format("Player %d wins!", players.indexOf(winner)));
+        io.println(String.format("Player %d wins!", players.indexOf(winner) + 1));
     }
 
     /*
