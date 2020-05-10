@@ -43,7 +43,7 @@ public class Kalah {
 		boolean gameFinished = true;
 		int selection;
 
-		while (!players.get(playerNum).hasOnlyEmptyHouses()) {
+		while (!board.hasPlayerWithAllEmptyHouses()) {
 
 			selection = GameConfig.BAD_SELECTION;
 
@@ -57,15 +57,8 @@ public class Kalah {
 				break;
 			}
 
-			while (board.makeMove(playerNum, selection)) {
-				selection = GameConfig.BAD_SELECTION;
-				while (selection == GameConfig.BAD_SELECTION) {
-					GameIO.printBoard(board, io);
-					selection = GameIO.getMove(board, playerNum, io);
-				}
-			}
-
-			playerNum = (playerNum < GameConfig.NUM_PLAYERS - 1) ? playerNum + 1: 0;
+			if (!board.makeMove(playerNum, selection))
+				playerNum = (playerNum < GameConfig.NUM_PLAYERS - 1) ? playerNum + 1: 0;
 		}
 
 		if (gameFinished) board.cleanup();

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    private List<Player> players;
-    private List<Pit> pits;
+    private final List<Player> players;
+    private final List<Pit> pits;
 
     public Board(final List<Player> players) {
         this.players = players;
@@ -55,6 +55,14 @@ public class Board {
 
         return pitsIndex == 0 || pitsIndex == 7;
 
+    }
+
+    public boolean hasPlayerWithAllEmptyHouses() {
+        for (Player player : players) {
+            if (player.hasOnlyEmptyHouses())
+                    return true;
+        }
+        return false;
     }
 
     public void cleanup() {
