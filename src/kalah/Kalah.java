@@ -40,32 +40,39 @@ public class Kalah {
 		Board board = new Board(players);
 
 		int playerNum = GameConfig.STARTING_PLAYER - 1;
-		boolean gameFinished = true;
+		boolean earlyFinish = false;
 		int selection;
+
+		GameIO.printBoard(board, io);
 
 		while (!board.hasPlayerWithAllEmptyHouses()) {
 
-			selection = GameConfig.BAD_SELECTION;
+			selection = GameIO.getMove(board, playerNum, io);
 
-			while (selection == GameConfig.BAD_SELECTION) {
-				GameIO.printBoard(board, io);
-				selection = GameIO.getMove(board, playerNum, io);
+			switch (selection) {
+				case GameConfig.QUIT_GAME:
+					earlyFinish = true;
+					break;
+				case GameConfig.BAD_SELECTION:
+					break;
+				default:
+					if (!board.makeMove(playerNum, selection))
+						playerNum = (playerNum < GameConfig.NUM_PLAYERS - 1) ? playerNum + 1: 0;
 			}
 
-			if (selection == GameConfig.QUIT_GAME) {
-				gameFinished = false;
+			if (earlyFinish)
 				break;
-			}
 
-			if (!board.makeMove(playerNum, selection))
-				playerNum = (playerNum < GameConfig.NUM_PLAYERS - 1) ? playerNum + 1: 0;
+			GameIO.printBoard(board, io);
 		}
-
-		if (gameFinished) board.cleanup();
 
 		io.println("Game over");
 		GameIO.printBoard(board, io);
-		if (gameFinished) GameIO.printGameResult(players, io);
+
+		if (!earlyFinish){
+			board.cleanup();
+			GameIO.printGameResult(players, io);
+		}
 
 	}
 }
