@@ -51,21 +51,38 @@ public class Board {
             Pit pit = pits.get(pitsIndex);
 
             if (seeds == 1) {
-                bonusTurn = pitsIndex == 6 | pitsIndex == 13;
                 seeds--;
-                // Evaluate if a capture takes place
+
+                // Check if the last seed falls in a store
+                if (pitsIndex == 6 | pitsIndex == 13) {
+                    bonusTurn = true;
+                    pit.incrementSeeds();
+                    continue;
+                }
+
+                // Don't attempt capture on pits not owned by player
+                if (!(pitsIndex >= playerNum * (GameConfig.NUM_HOUSES + 1) &&
+                        pitsIndex < playerNum * (GameConfig.NUM_HOUSES + 1) + GameConfig.NUM_HOUSES)){
+                    pit.incrementSeeds();
+                    continue;
+                }
+
+                // Evaluate if a capture takes place (really need to ensure that captures only happen for a player's
+                // own pit)
                 Pit oppositePit = pits.get(pits.size() - 2 - pitsIndex);
                 if (pit.getSeeds() == 0 && oppositePit.getSeeds() != 0) {
                     pits.get(playerNum == 0 ? 6:13).incrementSeeds(oppositePit.getSeeds()+1);
                     oppositePit.clearSeeds();
                 }
                 else pit.incrementSeeds();
+
+                continue;
             }
-            else {
-                pit.incrementSeeds();
-                seeds--;
-                pitsIndex = (pitsIndex < pits.size() - 1) ? pitsIndex + 1 : 0;
-            }
+
+            pit.incrementSeeds();
+            seeds--;
+            pitsIndex = (pitsIndex < pits.size() - 1) ? pitsIndex + 1 : 0;
+
         }
 
         return bonusTurn;
