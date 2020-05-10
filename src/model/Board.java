@@ -21,7 +21,7 @@ public class Board {
         return players;
     }
 
-    public void makeMove(int playerNum, int houseNum) {
+    public boolean makeMove(int playerNum, int houseNum) {
         /* When a player selects a house;
         * The seeds in that house get distributed one by one
         * through each player's house and store in order
@@ -52,6 +52,8 @@ public class Board {
             seeds--;
             pitsIndex = (pitsIndex < pits.size() - 1) ? pitsIndex + 1 : 0;
         }
+
+        return pitsIndex == 0 || pitsIndex == 7;
 
     }
 

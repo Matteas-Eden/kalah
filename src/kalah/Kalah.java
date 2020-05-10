@@ -57,7 +57,14 @@ public class Kalah {
 				break;
 			}
 
-			board.makeMove(playerNum, selection);
+			while (board.makeMove(playerNum, selection)) {
+				selection = GameConfig.BAD_SELECTION;
+				while (selection == GameConfig.BAD_SELECTION) {
+					GameIO.printBoard(board, io);
+					selection = GameIO.getMove(board, playerNum, io);
+				}
+			}
+
 			playerNum = (playerNum < GameConfig.NUM_PLAYERS - 1) ? playerNum + 1: 0;
 		}
 

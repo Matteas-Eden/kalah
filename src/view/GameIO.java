@@ -13,16 +13,22 @@ import java.util.ListIterator;
 public class GameIO {
 
     public static int getMove(Board board, int playerNum, IO io) {
+
         io.println(String.format("Player %d's turn - Specify house number or 'q' to quit: ", playerNum+1));
         String input = io.readFromKeyboard("");
+
         if (input.equals("q")) return GameConfig.QUIT_GAME;
+
         int selection = Integer.parseInt(input);
+
         // Need to ensure the player selects a non-empty house
         if (board.getPlayers().get(playerNum).getHouses().get(selection - 1).getSeeds() == 0) {
             io.println("House is empty. Move again.");
             selection = GameConfig.BAD_SELECTION;
         }
+
         return selection;
+
     }
 
     // TODO: Refactor HEAVILY
