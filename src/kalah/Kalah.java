@@ -45,7 +45,7 @@ public class Kalah {
 
 		GameIO.printBoard(board, io);
 
-		while (!board.hasPlayerWithAllEmptyHouses()) {
+		while (!players.get(playerNum).hasOnlyEmptyHouses()) {
 
 			selection = GameIO.getMove(board, playerNum, io);
 
