@@ -33,6 +33,7 @@ public class Board {
         // Find the pit and retrieve number of seeds in it
         int pitsIndex = playerNum * (GameConfig.NUM_HOUSES + 1) + houseNum - 1;
         int seeds = pits.get(pitsIndex).getSeeds();
+        boolean bonusTurn = false;
 
         // Clear the pit
         pits.get(pitsIndex).clearSeeds();
@@ -48,12 +49,26 @@ public class Board {
             }
 
             Pit pit = pits.get(pitsIndex);
-            pit.incrementSeeds();
-            seeds--;
-            pitsIndex = (pitsIndex < pits.size() - 1) ? pitsIndex + 1 : 0;
+
+            if (seeds == 1) {
+                bonusTurn = pitsIndex == 6 | pitsIndex == 13;
+                seeds--;
+                // Evaluate if a capture takes place
+                Pit oppositePit = pits.get(pits.size() - 2 - pitsIndex);
+                if (pit.getSeeds() == 0 && oppositePit.getSeeds() != 0) {
+                    pits.get(playerNum == 0 ? 6:13).incrementSeeds(oppositePit.getSeeds()+1);
+                    oppositePit.clearSeeds();
+                }
+                else pit.incrementSeeds();
+            }
+            else {
+                pit.incrementSeeds();
+                seeds--;
+                pitsIndex = (pitsIndex < pits.size() - 1) ? pitsIndex + 1 : 0;
+            }
         }
 
-        return pitsIndex == 0 || pitsIndex == 7;
+        return bonusTurn;
 
     }
 
