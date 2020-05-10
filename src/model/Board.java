@@ -40,6 +40,13 @@ public class Board {
 
         // Distribute seeds through all other pits until none are left
         while (seeds > 0) {
+
+            // Don't put seeds in opponent's store
+            if (pitsIndex == (playerNum == 1 ? 1 : 2) * (GameConfig.NUM_HOUSES + 1) - 1) {
+                pitsIndex = (pitsIndex < pits.size() - 1) ? pitsIndex + 1 : 0;
+                continue;
+            }
+
             Pit pit = pits.get(pitsIndex);
             pit.incrementSeeds();
             seeds--;
