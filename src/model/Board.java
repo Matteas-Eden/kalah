@@ -50,20 +50,21 @@ public class Board {
 
             Pit pit = pits.get(pitsIndex);
 
-            if (seeds == 1) {
-                seeds--;
+            if (seeds == GameConfig.SEED_LOSS_PER_PIT) {
+
+                seeds -= GameConfig.SEED_LOSS_PER_PIT;
 
                 // Check if the last seed falls in a store
                 if (pitsIndex == GameConfig.NUM_HOUSES | pitsIndex == GameConfig.NUM_HOUSES * 2 + 1) {
                     bonusTurn = true;
-                    pit.incrementSeeds();
+                    pit.incrementSeeds(GameConfig.SEED_LOSS_PER_PIT);
                     continue;
                 }
 
                 // Don't attempt capture on pits not owned by player
                 if (!(pitsIndex >= playerNum * (GameConfig.NUM_HOUSES + 1) &&
                         pitsIndex < playerNum * (GameConfig.NUM_HOUSES + 1) + GameConfig.NUM_HOUSES)){
-                    pit.incrementSeeds();
+                    pit.incrementSeeds(GameConfig.SEED_LOSS_PER_PIT);
                     continue;
                 }
 
@@ -71,16 +72,16 @@ public class Board {
                 // own pit)
                 Pit oppositePit = pits.get(pits.size() - 2 - pitsIndex);
                 if (pit.getSeeds() == 0 && oppositePit.getSeeds() != 0) {
-                    pits.get(playerNum == 0 ? GameConfig.NUM_HOUSES : GameConfig.NUM_HOUSES * 2 + 1).incrementSeeds(oppositePit.getSeeds()+1);
+                    pits.get(playerNum == 0 ? GameConfig.NUM_HOUSES : GameConfig.NUM_HOUSES * 2 + 1).incrementSeeds(oppositePit.getSeeds() + GameConfig.SEED_LOSS_PER_PIT);
                     oppositePit.clearSeeds();
                 }
-                else pit.incrementSeeds();
+                else pit.incrementSeeds(GameConfig.SEED_LOSS_PER_PIT);
 
                 continue;
             }
 
-            pit.incrementSeeds();
-            seeds--;
+            pit.incrementSeeds(GameConfig.SEED_LOSS_PER_PIT);
+            seeds -= GameConfig.SEED_LOSS_PER_PIT;
             pitsIndex = (pitsIndex < pits.size() - 1) ? pitsIndex + 1 : 0;
 
         }
