@@ -25,6 +25,16 @@ mede607@aucklanduni.ac.nz}
 \maketitle
 
 \begin{abstract}
+There were several decisions made in designing Kalah (a.k.a Mancala) in Java
+  7 such that it supported changeability. The main aspects of the design
+    considered 
+\end{abstract}
+
+\begin{IEEEkeywords}
+kalah, mancala, object-oriented design, changeability, java
+\end{IEEEkeywords}
+
+\section{Introduction}
 This document outlines the design decisions made when designing an
 implementation of the game Kalah (known elsewhere as Mancala) in Java 7.
 There were three aspects of design considered during development, and these
@@ -34,55 +44,33 @@ The first aspect of the design concerned the number of 'houses' available to
   a player. The prescribed set of rules dictated \textit{six} of these 'houses'
   for each player, however it was decided that this number should be
   changeable to accomodate future rulesets.
-The second aspect of the design concerned [...].
-The third aspect of the design concerned [...].
-\end{abstract}
-
-\begin{IEEEkeywords}
-kalah, mancala, object-oriented design, changeability, java
-\end{IEEEkeywords}
-
-\section{Introduction}
-To be written, or possibly omitted. Should expand on the abstract.
+The second aspect of the design concerned the number of 'seeds' that each house
+  starts the game with. The prescribed set of rules dicated that this starting
+  value should be \textit{4} seeds per house, however the design should allow
+  for ruleset changes.
+The third aspect of the design concerned the separation of input/output and
+game logic. This is to ensure future alterations to the specification of the
+output that was originally provided can be executed without needing to consider
+implications on the functionality of the game itself.
 
 \section{Design Decisions}
 
 \subsection{Number of Houses}
-\subsection{Starting Seeds}
-\subsection{Number of Players}
+The design I have implemented allows any number of houses (a minimum of
+1 house) to be used. This supports changeability
 
-\section*{References}
+\subsection{Number of Seeds}
+My design allows a developer to easily alter the number of seeds in each house
+at the start of the game. In addition, there is also support for altering the amount of seeds that are dropped into each pit when a player makes a move.
 
-Please number citations consecutively within brackets \cite{b1}. The 
-sentence punctuation follows the bracket \cite{b2}. Refer simply to the reference 
-number, as in \cite{b3}---do not use ``Ref. \cite{b3}'' or ``reference \cite{b3}'' except at 
-the beginning of a sentence: ``Reference \cite{b3} was the first $\ldots$''
+\subsection{Separation of IO and Game Logic}
+My design makes use of a class \textit{GameIO}, which 
+is concerned with handling player input and console output.
+This supports changeability as it means future alterations to IO are
+constrained to a single class. 
 
-Number footnotes separately in superscripts. Place the actual footnote at 
-the bottom of the column in which it was cited. Do not put footnotes in the 
-abstract or reference list. Use letters for table footnotes.
-
-Unless there are six authors or more give all authors' names; do not use 
-``et al.''. Papers that have not been published, even if they have been 
-submitted for publication, should be cited as ``unpublished'' \cite{b4}. Papers 
-that have been accepted for publication should be cited as ``in press'' \cite{b5}. 
-Capitalize only the first word in a paper title, except for proper nouns and 
-element symbols.
-
-For papers published in translation journals, please give the English 
-citation first, followed by the original foreign-language citation \cite{b6}.
-
-\begin{thebibliography}{00}
-\bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
-\bibitem{b2} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
-\bibitem{b3} I. S. Jacobs and C. P. Bean, ``Fine particles, thin films and exchange anisotropy,'' in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271--350.
-\bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
-\bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
-\bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
-\bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
-\end{thebibliography}
-\vspace{12pt}
-\color{red}
-IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
+%\begin{thebibliography}{00}
+%\bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
+%\end{thebibliography}
 
 \end{document}
