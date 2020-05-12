@@ -4,6 +4,7 @@ import com.qualitascorpus.testsupport.IO;
 import com.qualitascorpus.testsupport.MockIO;
 import model.Board;
 import model.GameConfig;
+import model.Macros;
 import model.Player;
 import view.GameIO;
 
@@ -50,10 +51,10 @@ public class Kalah {
 			selection = GameIO.getMove(board, playerNum, io);
 
 			switch (selection) {
-				case GameConfig.QUIT_GAME:
+				case Macros.QUIT_GAME:
 					earlyFinish = true;
 					break;
-				case GameConfig.BAD_SELECTION:
+				case Macros.BAD_SELECTION:
 					break;
 				default:
 					if (!board.makeMove(playerNum, selection))

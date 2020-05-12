@@ -1,10 +1,7 @@
 package view;
 
 import com.qualitascorpus.testsupport.IO;
-import model.Board;
-import model.GameConfig;
-import model.Pit;
-import model.Player;
+import model.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,14 +14,14 @@ public class GameIO {
         io.print(String.format("Player P%d's turn - Specify house number or 'q' to quit: ", playerNum+1));
         String input = io.readFromKeyboard("");
 
-        if (input.equals("q")) return GameConfig.QUIT_GAME;
+        if (input.equals("q")) return Macros.QUIT_GAME;
 
         int selection = Integer.parseInt(input);
 
         // Need to ensure the player selects a non-empty house
         if (board.getPlayers().get(playerNum).getHouses().get(selection - 1).getSeeds() == 0) {
             io.println("House is empty. Move again.");
-            selection = GameConfig.BAD_SELECTION;
+            selection = Macros.BAD_SELECTION;
         }
 
         return selection;
