@@ -54,7 +54,7 @@ public class Board {
                 seeds--;
 
                 // Check if the last seed falls in a store
-                if (pitsIndex == 6 | pitsIndex == 13) {
+                if (pitsIndex == GameConfig.NUM_HOUSES | pitsIndex == GameConfig.NUM_HOUSES * 2 + 1) {
                     bonusTurn = true;
                     pit.incrementSeeds();
                     continue;
@@ -71,7 +71,7 @@ public class Board {
                 // own pit)
                 Pit oppositePit = pits.get(pits.size() - 2 - pitsIndex);
                 if (pit.getSeeds() == 0 && oppositePit.getSeeds() != 0) {
-                    pits.get(playerNum == 0 ? 6:13).incrementSeeds(oppositePit.getSeeds()+1);
+                    pits.get(playerNum == 0 ? GameConfig.NUM_HOUSES : GameConfig.NUM_HOUSES * 2 + 1).incrementSeeds(oppositePit.getSeeds()+1);
                     oppositePit.clearSeeds();
                 }
                 else pit.incrementSeeds();
