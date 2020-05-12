@@ -41,13 +41,23 @@ public class GameIO {
 
         String p2Store = String.format("| %2d ", players.get(1).getStore().getSeeds());
 
-        io.println("+----+-------+-------+-------+-------+-------+-------+----+");
+        io.println(createDividerLine(GameConfig.NUM_HOUSES, false));
 
         io.println("| P2 " + formatHousesAsString(players.get(1).getHouses(), true) + p1Store);
-        io.println("|    |-------+-------+-------+-------+-------+-------|    |");
+        io.println(createDividerLine(GameConfig.NUM_HOUSES, true));
         io.println(p2Store + formatHousesAsString(players.get(0).getHouses(), false) + " P1 |");
 
-        io.println("+----+-------+-------+-------+-------+-------+-------+----+");
+        io.println(createDividerLine(GameConfig.NUM_HOUSES, false));
+    }
+
+    private static String createDividerLine(int numSections, boolean gaps) {
+        StringBuilder divider = new StringBuilder((gaps) ? "|    |" : "+----+");
+        for (int i = 0; i < numSections - 1; i++) {
+            divider.append("-------+");
+        }
+        divider.append("-------");
+        divider.append((gaps) ? "|    |" : "+----+");
+        return divider.toString();
     }
 
     public static void printGameResult(List<Player> players, IO io) {
