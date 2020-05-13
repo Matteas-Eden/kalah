@@ -23,13 +23,13 @@ public class Board {
 
     public boolean makeMove(int playerNum, int houseNum) {
         /* When a player selects a house;
-        * The seeds in that house get distributed one by one
-        * through each player's house and store in order
-        * until there are no more seeds to distribute
-        *
-        * If the last seed lands in the player's store, that
-        * player gets another turn.
-        * */
+         * The seeds in that house get distributed one by one
+         * through each player's house and store in order
+         * until there are no more seeds to distribute
+         *
+         * If the last seed lands in the player's store, that
+         * player gets another turn.
+         * */
         // Find the pit and retrieve number of seeds in it
         int pitsIndex = playerNum * (GameConfig.NUM_HOUSES + 1) + houseNum - 1;
         int seeds = pits.get(pitsIndex).getSeeds();
@@ -63,7 +63,7 @@ public class Board {
 
                 // Don't attempt capture on pits not owned by player
                 if (!(pitsIndex >= playerNum * (GameConfig.NUM_HOUSES + 1) &&
-                        pitsIndex < playerNum * (GameConfig.NUM_HOUSES + 1) + GameConfig.NUM_HOUSES)){
+                        pitsIndex < playerNum * (GameConfig.NUM_HOUSES + 1) + GameConfig.NUM_HOUSES)) {
                     pit.incrementSeeds(GameConfig.SEED_LOSS_PER_PIT);
                     continue;
                 }
@@ -74,8 +74,7 @@ public class Board {
                 if (pit.getSeeds() == 0 && oppositePit.getSeeds() != 0) {
                     pits.get(playerNum == 0 ? GameConfig.NUM_HOUSES : GameConfig.NUM_HOUSES * 2 + 1).incrementSeeds(oppositePit.getSeeds() + GameConfig.SEED_LOSS_PER_PIT);
                     oppositePit.clearSeeds();
-                }
-                else pit.incrementSeeds(GameConfig.SEED_LOSS_PER_PIT);
+                } else pit.incrementSeeds(GameConfig.SEED_LOSS_PER_PIT);
 
                 continue;
             }
@@ -93,7 +92,7 @@ public class Board {
     public boolean hasPlayerWithAllEmptyHouses() {
         for (Player player : players) {
             if (player.hasOnlyEmptyHouses())
-                    return true;
+                return true;
         }
         return false;
     }

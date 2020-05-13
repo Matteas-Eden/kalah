@@ -16,9 +16,13 @@ public class Pit {
         this.seeds = 0;
     }
 
-    public void incrementSeeds() { this.seeds++; }
+    public void incrementSeeds() {
+        this.seeds++;
+    }
 
-    public void incrementSeeds(int amount) { this.seeds += amount; }
+    public void incrementSeeds(int amount) {
+        this.seeds += amount;
+    }
 
     public boolean isEmpty() {
         return seeds == 0;

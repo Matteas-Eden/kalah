@@ -3,15 +3,13 @@ package view;
 import com.qualitascorpus.testsupport.IO;
 import model.*;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 
 public class GameIO {
 
     public static int getMove(Board board, int playerNum, IO io) {
 
-        io.print(String.format("Player P%d's turn - Specify house number or 'q' to quit: ", playerNum+1));
+        io.print(String.format("Player P%d's turn - Specify house number or 'q' to quit: ", playerNum + 1));
         String input = io.readFromKeyboard("");
 
         if (input.equals("q")) return Macros.QUIT_GAME;
@@ -68,9 +66,9 @@ public class GameIO {
     }
 
     /*
-    * Constructing a string for the houses for printing the board
-    * Needs to print out one player from left to right, and the other player from right to left
-    */
+     * Constructing a string for the houses for printing the board
+     * Needs to print out one player from left to right, and the other player from right to left
+     */
     public static String formatHousesAsString(List<Pit> houses, boolean isPlayerTwo) {
         StringBuilder out = new StringBuilder("|");
         if (!isPlayerTwo) {
@@ -78,11 +76,10 @@ public class GameIO {
                 out.append(String.format(" %d[%2d] |", houses.indexOf(house) + 1,
                         house.getSeeds()));
             }
-        }
-        else {
+        } else {
             for (int i = houses.size(); i > 0; i--) {
                 out.append(String.format(" %d[%2d] |", i,
-                        houses.get(i-1).getSeeds()));
+                        houses.get(i - 1).getSeeds()));
             }
         }
         return out.toString();
