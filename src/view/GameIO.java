@@ -9,8 +9,8 @@ public class GameIO {
 
     public static int getMove(Board board, int playerNum, IO io) {
 
-        io.print(String.format("Player P%d's turn - Specify house number or 'q' to quit: ", playerNum + 1));
-        String input = io.readFromKeyboard("");
+        String input = io.readFromKeyboard(String.format("Player P%d's turn - Specify house number or 'q' to quit: ",
+                playerNum + 1));
 
         if (input.equals("q")) {
             return Macros.QUIT_GAME;

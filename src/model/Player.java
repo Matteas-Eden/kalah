@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private List<Pit> houses;
-    private Pit store;
+    private final List<Pit> houses;
+    private final Pit store;
 
     public Player(int numHouses) {
         this.houses = new ArrayList<>();

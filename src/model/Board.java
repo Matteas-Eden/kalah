@@ -72,7 +72,8 @@ public class Board {
                 // own pit)
                 Pit oppositePit = pits.get(pits.size() - 2 - pitsIndex);
                 if (pit.getSeeds() == 0 && oppositePit.getSeeds() != 0) {
-                    pits.get(playerNum == 0 ? GameConfig.NUM_HOUSES : GameConfig.NUM_HOUSES * 2 + 1).incrementSeeds(oppositePit.getSeeds() + GameConfig.SEED_LOSS_PER_PIT);
+                    pits.get(playerNum == 0 ? GameConfig.NUM_HOUSES : GameConfig.NUM_HOUSES * 2 + 1)
+                            .incrementSeeds(oppositePit.getSeeds() + GameConfig.SEED_LOSS_PER_PIT);
                     oppositePit.clearSeeds();
                 } else pit.incrementSeeds(GameConfig.SEED_LOSS_PER_PIT);
 
@@ -87,14 +88,6 @@ public class Board {
 
         return bonusTurn;
 
-    }
-
-    public boolean hasPlayerWithAllEmptyHouses() {
-        for (Player player : players) {
-            if (player.hasOnlyEmptyHouses())
-                return true;
-        }
-        return false;
     }
 
     public void cleanup() {
