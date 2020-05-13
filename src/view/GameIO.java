@@ -47,8 +47,8 @@ public class GameIO {
     }
 
     /*
-    * Construct the divider line to match the number of houses
-    * */
+     * Construct the divider line to match the number of houses
+     * */
     private static String createDividerLine(int numSections, boolean gaps) {
         StringBuilder divider = new StringBuilder((gaps) ? "|    |" : "+----+");
         for (int i = 0; i < numSections - 1; i++) {
