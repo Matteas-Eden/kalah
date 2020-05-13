@@ -12,7 +12,9 @@ public class GameIO {
         io.print(String.format("Player P%d's turn - Specify house number or 'q' to quit: ", playerNum + 1));
         String input = io.readFromKeyboard("");
 
-        if (input.equals("q")) return Macros.QUIT_GAME;
+        if (input.equals("q")) {
+            return Macros.QUIT_GAME;
+        }
 
         int selection = Integer.parseInt(input);
 
@@ -26,25 +28,27 @@ public class GameIO {
 
     }
 
-    // TODO: Refactor HEAVILY
-    //  Specifically need to ensure the output scales for N houses
     public static void printBoard(Board board, IO io) {
 
         List<Player> players = board.getPlayers();
 
-        String p1Store = String.format(" %2d |", players.get(0).getStore().getSeeds());
+        String dividerLine = createDividerLine(GameConfig.NUM_HOUSES, false);
+        String dividerLineGaps = createDividerLine(GameConfig.NUM_HOUSES, true);
 
+        String p1Store = String.format(" %2d |", players.get(0).getStore().getSeeds());
         String p2Store = String.format("| %2d ", players.get(1).getStore().getSeeds());
 
-        io.println(createDividerLine(GameConfig.NUM_HOUSES, false));
-
+        io.println(dividerLine);
         io.println("| P2 " + formatHousesAsString(players.get(1).getHouses(), true) + p1Store);
-        io.println(createDividerLine(GameConfig.NUM_HOUSES, true));
+        io.println(dividerLineGaps);
         io.println(p2Store + formatHousesAsString(players.get(0).getHouses(), false) + " P1 |");
+        io.println(dividerLine);
 
-        io.println(createDividerLine(GameConfig.NUM_HOUSES, false));
     }
 
+    /*
+    * Construct the divider line to match the number of houses
+    * */
     private static String createDividerLine(int numSections, boolean gaps) {
         StringBuilder divider = new StringBuilder((gaps) ? "|    |" : "+----+");
         for (int i = 0; i < numSections - 1; i++) {
@@ -55,12 +59,22 @@ public class GameIO {
         return divider.toString();
     }
 
-    public static void printGameResult(List<Player> players, IO io) {
+    public static void printGameResult(List<Player> players, IO io, Board board, boolean gameQuit) {
+
+        io.println("Game over");
+        GameIO.printBoard(board, io);
+
+        if (gameQuit) return;
+
+        board.cleanup();
+
         Player winner = players.get(0);
+
         for (Player player : players) {
             io.println(String.format("\tplayer %d:%d", players.indexOf(player) + 1, player.getStore().getSeeds()));
             if (player.getStore().getSeeds() > winner.getStore().getSeeds()) winner = player;
         }
+
         if (players.get(0).getStore().getSeeds() == players.get(1).getStore().getSeeds()) io.println("A tie!");
         else io.println(String.format("Player %d wins!", players.indexOf(winner) + 1));
     }
