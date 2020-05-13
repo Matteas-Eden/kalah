@@ -3,7 +3,6 @@
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
@@ -26,51 +25,50 @@ mede607@aucklanduni.ac.nz}
 
 \begin{abstract}
 There were several decisions made in designing Kalah (a.k.a Mancala) in Java
-  7 such that it supported changeability. The main aspects of the design
-    considered 
+  7 such that it supported changeability. Three of those decisions are
+  discussed here: the creation of a configuration class, the abstraction of
+  game elements and the separation of IO from game logic.
 \end{abstract}
 
 \begin{IEEEkeywords}
 kalah, mancala, object-oriented design, changeability, java
 \end{IEEEkeywords}
 
-\section{Introduction}
-This document outlines the design decisions made when designing an
-implementation of the game Kalah (known elsewhere as Mancala) in Java 7.
-There were three aspects of design considered during development, and these
-  aspects were considered with great concern as to how they affect the
-  changeability of the object-oriented design.
-The first aspect of the design concerned the number of 'houses' available to
-  a player. The prescribed set of rules dictated \textit{six} of these 'houses'
-  for each player, however it was decided that this number should be
-  changeable to accomodate future rulesets.
-The second aspect of the design concerned the number of 'seeds' that each house
-  starts the game with. The prescribed set of rules dicated that this starting
-  value should be \textit{4} seeds per house, however the design should allow
-  for ruleset changes.
-The third aspect of the design concerned the separation of input/output and
-game logic. This is to ensure future alterations to the specification of the
-output that was originally provided can be executed without needing to consider
-implications on the functionality of the game itself.
-
 \section{Design Decisions}
 
-\subsection{Number of Houses}
-The design I have implemented allows any number of houses (a minimum of
-1 house) to be used. This supports changeability
+Associate Professor Ewan Tempero defined changeability as 
+\textit{How much it costs to make the necessary changes to existing code, once those
+changes have been identified} \cite{changeability}. The design decisions
+outlined here were made with this specific definition in mind.
 
-\subsection{Number of Seeds}
-My design allows a developer to easily alter the number of seeds in each house
-at the start of the game. In addition, there is also support for altering the amount of seeds that are dropped into each pit when a player makes a move.
+\subsection{Use of a Config class}
+The design I have implemented groups commonly used values inside a globally
+accessible configuration class \texttt{GameConfig}, such as
+\texttt{NUM\_HOUSES} and \texttt{STARTING\_SEEDS}. These values can be modified
+within the class to then alter the behaviour of the game, such as increasing
+the number of houses for each player.
+This supports changeability because the cost of changing these values is very
+low, given they are merely constants and although they are referenced in many
+places, they are only defined once.
+
+\subsection{Abstraction of Game Elements}
+My design abstracts different game elements into dedicated classes, such as
+\texttt{Player}, \texttt{Board} and \texttt{Pit} (a combination of house and
+store). This decision supports changeability as an individual looking to change
+these aspects of the game can do so by only changing the implementations of
+these classes. By having classes with high cohesion, the cost of a change can
+be reduced.
 
 \subsection{Separation of IO and Game Logic}
-My design makes use of a class \textit{GameIO}, which 
+My design makes use of a class \texttt{GameIO}, which 
 is concerned with handling player input and console output.
-This supports changeability as it means future alterations to IO are
-constrained to a single class. 
+This decision supports changeability as it means future alterations to IO are
+constrained to a single class. It also means that an individual does not need
+to be concerned with breaking the functionality of the game by altering IO.
 
-%\begin{thebibliography}{00}
-%\bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
-%\end{thebibliography}
+\begin{thebibliography}{00}
+\bibitem{changeability} E. Tempero ``SOFTENG 701 - Lecture 01b
+  - Changeability'' Canvas, slide 12, May 2020.
+\end{thebibliography}
 
 \end{document}
