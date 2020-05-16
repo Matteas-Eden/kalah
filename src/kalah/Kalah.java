@@ -31,12 +31,7 @@ public class Kalah {
      */
     public void play(IO io) {
 
-        Player player1 = new Player(GameConfig.NUM_HOUSES);
-        Player player2 = new Player(GameConfig.NUM_HOUSES);
-
-        List<Player> players = new ArrayList<>();
-        players.add(player1);
-        players.add(player2);
+        List<Player> players = setupPlayers(2);
 
         Board board = new Board(players);
 
@@ -70,5 +65,15 @@ public class Kalah {
 
         GameIO.printGameResult(players, io, board, gameQuit);
 
+    }
+
+    private static List<Player> setupPlayers(int numPlayers) {
+        List<Player> players = new ArrayList<>();
+
+        for (int i = 0; i < numPlayers; i++) {
+            players.add(new Player(GameConfig.NUM_HOUSES));
+        }
+
+        return players;
     }
 }
