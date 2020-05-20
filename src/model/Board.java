@@ -21,6 +21,10 @@ public class Board {
         return players;
     }
 
+    public List<Pit> getPits() {
+        return pits;
+    }
+
     public boolean makeMove(int playerNum, int houseNum) {
         /* When a player selects a house;
          * The seeds in that house get distributed one by one

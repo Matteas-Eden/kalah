@@ -1,0 +1,131 @@
+\documentclass[10pt, a4paper, conference]{IEEEtran}
+%\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Implementing the \textit{Change Board Orientation} change case}
+
+\author{\IEEEauthorblockN{Matthew Eden}
+\IEEEauthorblockA{\textit{Department of Electrical, Computer and Software
+Engineering} \\
+\textit{University of Auckland}\\
+Auckland, New Zealand \\
+mede607@aucklanduni.ac.nz}
+}
+
+\maketitle
+
+\begin{abstract}
+  To evaluate the changeability of an implementation of Kalah (a.k.a Mancala), a change case was
+  proposed. This involved changing the \textit{horizontal} orientation of the board
+  to a \textit{vertical} orientation. A change plan was created in anticipation
+  of implementing the changes in code. During the execution of this plan, there
+  were some issues encountered, but not a significant amount. The time taken to implement
+  the change case was roughly 16 minutes. The overall impact of the change case was
+  low and it was straightforward to preserve the functionality for the horizontal
+  orientation if this change need be reverted in future. As such, there is a good
+  amount of changeability in this design.
+\end{abstract}
+
+\begin{IEEEkeywords}
+kalah, mancala, changeability, java
+\end{IEEEkeywords}
+
+\section{Planning the Change Case}
+Before any code was actually written, a plan was devised describing the minimal
+amount of changes that would be required to achieve the desired change case.
+This plan is as follows.
+\begin{enumerate}
+  \item Find the \texttt{GameIO} class
+  \item Locate the \texttt{printBoard} method
+  \item Add an additional argument: \texttt{boolean isVertical}
+  \item With the exception of the first non-blank line concerning
+    \texttt{List<Players>}, wrap the method body in an \texttt{if-else} statement.
+  \item Make this \texttt{if} condition controlled by the new method argument, such that
+    \texttt{if (isVertical) \{...\} else \{/* ORIGINAL METHOD BODY */\}}
+  \item Within the \texttt{if} branch, add 4 \texttt{io.println} statements for
+    printing out the outline of the board and the player stores, ensuring that
+    they follow the specified format.
+  \item In the middle of those statements (i.e. between the printing of player
+    stores), add a call to a new method
+    \texttt{printHousesVertically}, passing in \texttt{GameConfig.NUM\_HOUSES}
+    as the argument.
+  \item Implement this method to print out the houses of both players such that
+    it follows the specifed format.
+  \item Update invocations of \texttt{printBoard} to pass in \texttt{true} as a third argument.
+\end{enumerate}
+
+\section{Implementing the Change Case}
+The total amount of time taken to implement the change case was timed as being 
+15 minutes and 58 seconds. During the execution of the aforementioned plan, there were some
+issues encountered. Overall, the plan was a success and it was not difficult to
+implement the change case. A breakdown of the steps carried out follows. 
+\begin{enumerate}
+  \item No issues in finding the \texttt{GameIO} class.
+  \item No issues in locating the \texttt{printBoard} method.
+  \item No issues in adding an additional argument to \texttt{printBoard}.
+  \item No issues in creating an \texttt{if-else} statement to wrap the method
+    body.
+  \item No issues in implementing the condition for the \texttt{if-else}
+    statement.
+  \item No issues in adding the required \texttt{io.println} statements.
+    Although the argument to be provided to those statements was not specified
+    (i.e. what exactly should be printed), it was not difficult to figure it
+    out based on the format specified by the test cases and the pre-existing
+    implementation of the \texttt{printBoard} method. 
+  \item No issues in adding a call to \texttt{printHousesVertically} and
+    providing \texttt{GameConfig.NUM\_HOUSES} as the argument.
+  \item There was some issue in implementing \texttt{printHousesVertically}.
+    The number of method arguments specified in the plan was not sufficient, as
+    the final version of the method created required \textit{three} arguments, as opposed to
+    the \textit{one} that was originally planned. The two additional arguments
+    were \texttt{IO io} and \texttt{List<Pit> pits}. This then meant that the
+    invocation of \texttt{printHousesVertically} in \texttt{printBoard}
+    required changing and required additional values to be passed in. There was
+    already a pre-existing \texttt{IO io} argument in \texttt{printBoard}, so there was no
+    issue in passing that as an argument to \texttt{printHousesVertically}.
+    However, there was no pre-existing \texttt{List<Pit> pits} or equivalent
+    argument. Within the \texttt{printBoard} method there was a pre-existing
+    \texttt{Board board} argument, with that object containing
+    a \texttt{List<Pit> pits} field that would be sufficient. However, there did not
+    exist a getter method to access that field, so this had to be
+    implemented. The plan did also not go into detail about \textit{how} to
+    implement the \texttt{printHousesVertically} method, however the
+    pre-existing method \texttt{formatHousesAsString} was sufficient as a guide for
+    figuring out the implementation.
+  \item No issues in updating existing invocations of 
+    \texttt{printBoard} to pass in \texttt{true} as a third argument.
+\end{enumerate}
+
+\section{Impact of the Change Case}
+On a scale from \textit{0.0} to \textit{1.0}, the impact of this change case is
+\textit{0.1}. For all intents and purposes, the game of \textit{Kalah} can be
+played in the same manner as before the change case despite the visual change.
+In saying that, these visual changes mean the impact is strictly non-zero.
+
+\section{Changeability Assessment}
+My original assessment of the changeability of this design claimed that the
+design supported changeability in part because of its separation of IO and game
+logic \cite{a3-design}. The successful implemention of the \textit{Change Board
+Orientation} change case further supports those claims. Although there were
+some issues faced when following the change plan, these issues could be argued to
+arise from poor planning rather than a lack of changeability in the design. The
+only issue directly related to \textit{changeability} that arose was the lack
+of a \texttt{getPits} method in the \texttt{Board} class. In spite of this,
+the implementation of the change case did not take a significant
+amount of time and resulted in minimal impact on the functionality of the
+implementation. As such, the original changeability assessment of the design
+was correct.
+
+\begin{thebibliography}{00}
+  \bibitem{a3-design} M. Eden ``SOFTENG 701 - Assignment 3 - Submission``,
+    \textit{Implementing Kalah with a Changeable Object-Oriented Design}
+\end{thebibliography}
+\end{document}

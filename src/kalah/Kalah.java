@@ -39,7 +39,7 @@ public class Kalah {
         boolean gameQuit = false;
         int selection;
 
-        GameIO.printBoard(board, io);
+        GameIO.printBoard(board, io, true);
 
         while (!players.get(playerNum).hasOnlyEmptyHouses()) {
 
@@ -59,7 +59,7 @@ public class Kalah {
             if (gameQuit)
                 break;
 
-            GameIO.printBoard(board, io);
+            GameIO.printBoard(board, io, true);
 
         }
 

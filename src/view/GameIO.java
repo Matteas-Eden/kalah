@@ -28,22 +28,31 @@ public class GameIO {
 
     }
 
-    public static void printBoard(Board board, IO io) {
+    public static void printBoard(Board board, IO io, boolean isVertical) {
 
         List<Player> players = board.getPlayers();
 
-        String dividerLine = createDividerLine(GameConfig.NUM_HOUSES, false);
-        String dividerLineGaps = createDividerLine(GameConfig.NUM_HOUSES, true);
+        if (isVertical) {
+            io.println("+---------------+");
+            io.println(String.format("|       | P2 %2d |", players.get(1).getStore().getSeeds()));
+            printHousesVertically(board.getPits(), io, GameConfig.NUM_HOUSES);
+            io.println(String.format("| P1 %2d |       |", players.get(0).getStore().getSeeds()));
+            io.println("+---------------+");
+        }
+        else {
 
-        String p1Store = String.format(" %2d |", players.get(0).getStore().getSeeds());
-        String p2Store = String.format("| %2d ", players.get(1).getStore().getSeeds());
+            String dividerLine = createDividerLine(GameConfig.NUM_HOUSES, false);
+            String dividerLineGaps = createDividerLine(GameConfig.NUM_HOUSES, true);
 
-        io.println(dividerLine);
-        io.println("| P2 " + formatHousesAsString(players.get(1).getHouses(), true) + p1Store);
-        io.println(dividerLineGaps);
-        io.println(p2Store + formatHousesAsString(players.get(0).getHouses(), false) + " P1 |");
-        io.println(dividerLine);
+            String p1Store = String.format(" %2d |", players.get(0).getStore().getSeeds());
+            String p2Store = String.format("| %2d ", players.get(1).getStore().getSeeds());
 
+            io.println(dividerLine);
+            io.println("| P2 " + formatHousesAsString(players.get(1).getHouses(), true) + p1Store);
+            io.println(dividerLineGaps);
+            io.println(p2Store + formatHousesAsString(players.get(0).getHouses(), false) + " P1 |");
+            io.println(dividerLine);
+        }
     }
 
     /*
@@ -62,7 +71,7 @@ public class GameIO {
     public static void printGameResult(List<Player> players, IO io, Board board, boolean gameQuit) {
 
         io.println("Game over");
-        GameIO.printBoard(board, io);
+        GameIO.printBoard(board, io, true);
 
         if (gameQuit) return;
 
@@ -99,4 +108,12 @@ public class GameIO {
         return out.toString();
     }
 
+    private static void printHousesVertically(List<Pit> pits, IO io, int numHouses) {
+        io.println("+-------+-------+");
+        for (int i = 0; i < numHouses; i++) {
+            io.println(String.format("| %d[%2d] | %d[%2d] |",
+                    i + 1, pits.get(i).getSeeds(), numHouses - i, pits.get(numHouses * 2 - i).getSeeds()));
+        }
+        io.println("+-------+-------+");
+    }
 }
