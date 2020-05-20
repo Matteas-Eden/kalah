@@ -71,7 +71,7 @@ public class GameIO {
     public static void printGameResult(List<Player> players, IO io, Board board, boolean gameQuit) {
 
         io.println("Game over");
-        GameIO.printBoard(board, io, true);
+        GameIO.printBoard(board, io, GameConfig.VERTICAL_OUTPUT);
 
         if (gameQuit) return;
 

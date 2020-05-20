@@ -31,7 +31,7 @@ public class Kalah {
      */
     public void play(IO io) {
 
-        List<Player> players = setupPlayers(2);
+        List<Player> players = setupPlayers(GameConfig.NUM_PLAYERS);
 
         Board board = new Board(players);
 
@@ -39,7 +39,7 @@ public class Kalah {
         boolean gameQuit = false;
         int selection;
 
-        GameIO.printBoard(board, io, true);
+        GameIO.printBoard(board, io, GameConfig.VERTICAL_OUTPUT);
 
         while (!players.get(playerNum).hasOnlyEmptyHouses()) {
 
@@ -59,7 +59,7 @@ public class Kalah {
             if (gameQuit)
                 break;
 
-            GameIO.printBoard(board, io, true);
+            GameIO.printBoard(board, io, GameConfig.VERTICAL_OUTPUT);
 
         }
 
