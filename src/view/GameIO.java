@@ -68,10 +68,10 @@ public class GameIO {
         return divider.toString();
     }
 
-    public static void printGameResult(List<Player> players, IO io, Board board, boolean gameQuit, boolean isVertical) {
+    public static void printGameResult(List<Player> players, IO io, Board board, boolean gameQuit) {
 
         io.println("Game over");
-        GameIO.printBoard(board, io, isVertical);
+        GameIO.printBoard(board, io, true);
 
         if (gameQuit) return;
 

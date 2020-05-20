@@ -64,11 +64,11 @@ public class Kalah {
             if (gameQuit)
                 break;
 
-            GameIO.printBoard(board, io, GameConfig.VERTICAL_OUTPUT);
+            GameIO.printBoard(board, io, true);
 
         }
 
-        GameIO.printGameResult(players, io, board, gameQuit, GameConfig.VERTICAL_OUTPUT);
+        GameIO.printGameResult(players, io, board, gameQuit);
 
     }
 }
