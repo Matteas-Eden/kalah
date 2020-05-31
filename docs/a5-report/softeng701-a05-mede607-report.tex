@@ -35,6 +35,14 @@ amount of changes that would be required to achieve the desired change case.
 This plan is as follows.
 \begin{enumerate}
   \item Find the \texttt{Kalah} class
+  \item Find the \texttt{Play} method
+  \item Within the \texttt{while} loop, modify the assignment to the variable
+    \texttt{selection} to read: \texttt{selection = (playerNum == 1)
+    ? GameIO.computeMove(board, playerNum, io) : GameIO.getMove(board, playerNum, io);}
+  \item Find the \texttt{GameIO} class
+  \item Create a new method: \texttt{public static int computeMove(Board board,
+    int playerNum, IO io)}
+  \item Implement the \texttt{computeMove} method
 \end{enumerate}
 
 \section{Implementing the Change Case}
