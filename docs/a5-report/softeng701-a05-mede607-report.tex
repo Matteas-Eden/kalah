@@ -23,6 +23,18 @@ mede607@aucklanduni.ac.nz}
 \maketitle
 
 \begin{abstract}
+  To evaluate the changeability of an implementation of Kalah (a.k.a Mancala), a change case was
+  proposed. This involved replacing the second player in the game with a simple
+  AI dubbed \textit{Best move or first robot}. Instead of taking player inputs,
+  this AI would determine moves based on whether it was possible to achieve an
+  extra move or a capture. If neither were possible, it simply chose the first
+  available house (i.e. first non-empty house). A change plan was created in anticipation
+  of implementing the changes in code. During the execution of this plan, there
+  were several issues encountered as a result of the complexity of the change
+  case and the somewhat lacking changeability of the design requiring much new
+  code to be written. The time taken to implement the change case was roughly 50 minutes.
+  The overall impact of the change case was mild, as the base ruleset hasn't
+  changed but the game is noticeably different. 
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -108,13 +120,13 @@ change case was implemented on top of a previous change case
 \cite{a4-change-case}, and in that instance the design showed a good level of 
 changeability. However, due to a lack of factorisation of functionality related
 to determining different move outcomes (i.e. gaining an extra move or executing
-a capture), that aspect of the design did not have good changeability. If
-a future developer wishes to change the conditions that lead to an extra move
-or a capture they will need to significantly alter the design and doing so will
-not be a straightforward process, as I have discovered in implementing this
-change case. So, contrary to claims made previously \cite{a3-design}, this
-design of Kalah only \textit{partially} lends itself to changeability and could
-be improved to be more changeable.
+a capture), this aspect of the design did not have good changeability and that
+made this change case more difficult to implement. If a future developer wishes 
+to change the conditions that lead to an extra move or a capture they will need 
+to significantly alter the design and doing so will not be a straightforward process, 
+as I have discovered in implementing this change case. So, contrary to claims made 
+previously \cite{a3-design}, this design of Kalah only \textit{partially} lends itself 
+to changeability and could be improved to be more changeable.
 
 \begin{thebibliography}{00}
   \bibitem{a3-design} M. Eden ``SOFTENG 701 - Assignment 3 - Submission``,
