@@ -7,6 +7,72 @@ import java.util.List;
 
 public class GameIO {
 
+    /*
+    * Checks if emptying a given house of seeds would result in another move for that player
+    */
+    private static boolean checkExtraTurn(Board board, Pit house, int playerNum) {
+        List<Pit> playerHouses = board.getPlayers().get(playerNum).getHouses();
+        return (house.getSeeds() % (GameConfig.NUM_HOUSES + 1)
+                == (GameConfig.NUM_HOUSES + 1 - (playerHouses.indexOf(house) + 1)));
+    }
+
+    /*
+    * Checks if emptying a given house of seeds would result in a capture for that player
+    */
+    private static boolean checkForCapture(Board board, List<Pit> playerHouses, Pit house) {
+
+        List<Pit> pits = board.getPits();
+
+        // Calculate the position of the last seed sown into a house
+        // based on the seeds from the first house (0-indexed)
+        int newPos = (pits.indexOf(house) + house.getSeeds()) % 13;
+        int oppositePitPos = pits.size() - 2 - newPos;
+
+        if (newPos > GameConfig.NUM_HOUSES + 1) {
+            if (pits.get(newPos).getSeeds() == 0) {
+                return pits.get(oppositePitPos).getSeeds() != 0;
+            }
+        }
+
+        return false;
+
+    }
+
+    public static int computeMove(Board board, int playerNum, IO io) {
+
+        List<Pit> playerHouses = board.getPlayers().get(playerNum).getHouses();
+
+        for (Pit house : playerHouses) {
+            if (house.getSeeds() == 0) continue;
+            if (checkExtraTurn(board, house, playerNum)) {
+                System.out.println(
+                        String.format("Player P%d (Robot) chooses house #%d because it leads to an extra move",
+                                playerNum+1, playerHouses.indexOf(house) + 1));
+                return playerHouses.indexOf(house) + 1;
+            }
+            else if (checkForCapture(board, playerHouses, house)) {
+                System.out.println(
+                        String.format("Player P%d (Robot) chooses house #%d because it leads to a capture",
+                                playerNum+1, playerHouses.indexOf(house) + 1));
+                return playerHouses.indexOf(house) + 1;
+            }
+        }
+
+        // If there is no possibility for extra move or capture, pick
+        // the first legal house with lowest number for the move
+        for (Pit house : playerHouses) {
+            if (!house.isEmpty()) {
+                System.out.println(
+                        String.format("Player P%d (Robot) chooses house #%d because it is the first legal move",
+                                playerNum+1, playerHouses.indexOf(house) + 1));
+                return playerHouses.indexOf(house) + 1;
+            }
+        }
+
+        return -1;
+
+    }
+
     public static int getMove(Board board, int playerNum, IO io) {
 
         String input = io.readFromKeyboard(String.format("Player P%d's turn - Specify house number or 'q' to quit: ",
