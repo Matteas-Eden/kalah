@@ -65,7 +65,14 @@ This plan is as follows.
 
 \section{Implementing the Change Case}
 The total amount of time taken to implement the change case was timed as being 
-15 minutes and 58 seconds. During the execution of the aforementioned plan, there were some
+48 minutes and 50 seconds. During the execution of the aforementioned plan,
+there were various issues encountered that arose due to the complexity of
+the change case. In particular, implementing the base logic for the BMF bot
+proved troublesome and the change plan did not convey in enough detail how
+this should be done; thereby requiring me as a developer to figure it out on
+the spot. Although there was a lot of new code to be written, a large majority
+of that code was constrained to a single method which made it easier to
+manage. A breakdown of each step in the change plan follows.
 \begin{enumerate}
   \item No issues in finding the \texttt{GameConfig} class.
   \item No issues in changing the value of \texttt{VERTICAL\_OUTPUT}.
@@ -74,16 +81,14 @@ The total amount of time taken to implement the change case was timed as being
   \item No issues in creating a \texttt{List<Pit>} or invoking the required
     methods to obtain a value for it.
   \item No issues in creating the loops.
-  \item In the first loop, implement logic to determine if a move exists that
-    leads to an extra move. Achieve this by comparing the number of seeds that
-    would be sown and the distance to the player's store. If equal, that move
-    leads to an extra move. Otherwise it does not.
-  \item In the second loop, implement logic to determine if a move exists that
-    leads to a capture. Achieve this by calculating where the last seed sown
-    will land and using this information to determine whether a capture occurs
-    at that location.
-  \item In the third loop, implement logic to determine the legal move that
-    exists with the lowest house number i.e. index.
+  \item In the first loop, some difficulties arose with implementing the
+    comparison condition. Particularly with regard to moves that sow enough
+    seeds to circle around the board, passing both player's houses.
+  \item In the second loop, it was difficult to calculate the position at which
+    the last seed of a potential move would be sown. Particularly with regard
+    to how the opposing player's store is skipped when sowing seeds that circle
+    the board.
+  \item No issues in implementing the logic for the third loop.
   \item No issues in finding the \texttt{Kalah} class.
   \item No issues in finding the \texttt{Play} method.
   \item No issues in modifying the assignment of \texttt{selection}.
