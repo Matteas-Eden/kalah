@@ -43,7 +43,8 @@ public class Kalah {
 
         while (!players.get(playerNum).hasOnlyEmptyHouses()) {
 
-            selection = GameIO.getMove(board, playerNum, io);
+            selection = (playerNum == 1) ? GameIO.computeMove(board, playerNum, io)
+                    : GameIO.getMove(board, playerNum, io);
 
             switch (selection) {
                 case Macros.QUIT_GAME:

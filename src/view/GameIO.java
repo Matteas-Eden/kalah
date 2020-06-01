@@ -7,6 +7,55 @@ import java.util.List;
 
 public class GameIO {
 
+    public static int computeMove(Board board, int playerNum, IO io) {
+
+        List<Pit> playerHouses = board.getPlayers().get(playerNum).getHouses();
+
+        // Determine move leading to an extra move
+        for (Pit house : playerHouses) {
+
+            if (house.getSeeds() == 0) continue;
+
+            if (house.getSeeds() % ((GameConfig.NUM_HOUSES + 1) * 2)
+                    == GameConfig.NUM_HOUSES + 1 - (playerHouses.indexOf(house) + 1)) {
+                io.println(String.format("Player P%d (Robot) chooses house #%d because it leads to an extra move",
+                        playerNum + 1, playerHouses.indexOf(house) + 1));
+                return playerHouses.indexOf(house) + 1;
+            }
+        }
+
+        // Determine move leading to a capture
+        for (Pit house : playerHouses) {
+
+            if (house.getSeeds() == 0) continue;
+
+            List<Pit> pits = board.getPits();
+            int theoreticalPosition = (pits.indexOf(house) + house.getSeeds());
+            int actualPosition = theoreticalPosition % 14 + theoreticalPosition / 20;
+
+            if (actualPosition > GameConfig.NUM_HOUSES && actualPosition != 13) {
+                if (pits.get(actualPosition).getSeeds() == 0)
+                    if (pits.get(pits.size() - 2 - actualPosition).getSeeds() != 0 || theoreticalPosition / 20 > 0) {
+                        io.println(String.format("Player P%d (Robot) chooses house #%d because it leads to a capture",
+                                playerNum + 1, playerHouses.indexOf(house) + 1));
+                        return playerHouses.indexOf(house) + 1;
+                    }
+            }
+        }
+
+        // Determine legal move with lowest index
+        for (Pit house : playerHouses) {
+            if (!house.isEmpty()) {
+                io.println(String.format("Player P%d (Robot) chooses house #%d because it is the first legal move",
+                        playerNum + 1, playerHouses.indexOf(house) + 1));
+                return playerHouses.indexOf(house) + 1;
+            }
+        }
+
+        return -1;
+
+    }
+
     public static int getMove(Board board, int playerNum, IO io) {
 
         String input = io.readFromKeyboard(String.format("Player P%d's turn - Specify house number or 'q' to quit: ",
