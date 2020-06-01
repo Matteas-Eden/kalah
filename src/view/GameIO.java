@@ -12,7 +12,7 @@ public class GameIO {
     */
     private static boolean checkExtraTurn(Board board, Pit house, int playerNum) {
         List<Pit> playerHouses = board.getPlayers().get(playerNum).getHouses();
-        return (house.getSeeds() % (GameConfig.NUM_HOUSES + 1)
+        return (house.getSeeds() % ((GameConfig.NUM_HOUSES + 1) * 2)
                 == (GameConfig.NUM_HOUSES + 1 - (playerHouses.indexOf(house) + 1)));
     }
 
@@ -25,12 +25,13 @@ public class GameIO {
 
         // Calculate the position of the last seed sown into a house
         // based on the seeds from the first house (0-indexed)
-        int newPos = (pits.indexOf(house) + house.getSeeds()) % 13;
-        int oppositePitPos = pits.size() - 2 - newPos;
+        int theoreticalNewPos = (pits.indexOf(house) + house.getSeeds());
+        int actualNewPos = theoreticalNewPos % 14 + theoreticalNewPos / 20;
+        int oppositePitPos = pits.size() - 2 - actualNewPos;
 
-        if (newPos > GameConfig.NUM_HOUSES + 1) {
-            if (pits.get(newPos).getSeeds() == 0) {
-                return pits.get(oppositePitPos).getSeeds() != 0;
+        if (actualNewPos > GameConfig.NUM_HOUSES && actualNewPos != 13) {
+            if (pits.get(actualNewPos).getSeeds() == 0) {
+                return pits.get(oppositePitPos).getSeeds() != 0 || theoreticalNewPos / 20 > 0;
             }
         }
 
@@ -45,13 +46,17 @@ public class GameIO {
         for (Pit house : playerHouses) {
             if (house.getSeeds() == 0) continue;
             if (checkExtraTurn(board, house, playerNum)) {
-                System.out.println(
+                io.println(
                         String.format("Player P%d (Robot) chooses house #%d because it leads to an extra move",
                                 playerNum+1, playerHouses.indexOf(house) + 1));
                 return playerHouses.indexOf(house) + 1;
             }
-            else if (checkForCapture(board, playerHouses, house)) {
-                System.out.println(
+        }
+
+        for (Pit house : playerHouses) {
+            if (house.getSeeds() == 0) continue;
+            if (checkForCapture(board, playerHouses, house)) {
+                io.println(
                         String.format("Player P%d (Robot) chooses house #%d because it leads to a capture",
                                 playerNum+1, playerHouses.indexOf(house) + 1));
                 return playerHouses.indexOf(house) + 1;
@@ -62,7 +67,7 @@ public class GameIO {
         // the first legal house with lowest number for the move
         for (Pit house : playerHouses) {
             if (!house.isEmpty()) {
-                System.out.println(
+                io.println(
                         String.format("Player P%d (Robot) chooses house #%d because it is the first legal move",
                                 playerNum+1, playerHouses.indexOf(house) + 1));
                 return playerHouses.indexOf(house) + 1;
