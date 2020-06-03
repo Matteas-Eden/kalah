@@ -23,6 +23,18 @@ mede607@aucklanduni.ac.nz}
 \maketitle
 
 \begin{abstract}
+  To evaluate the changeability of an implementation of Kalah (a.k.a Mancala), a change case was
+  proposed. This involved replacing the second player in the game with a simple
+  AI dubbed \textit{Best move or first robot}. Instead of taking player inputs,
+  this AI would determine moves based on whether it was possible to achieve an
+  extra move or a capture. If neither were possible, it simply chose the first
+  available house (i.e. first non-empty house). A change plan was created in anticipation
+  of implementing the changes in code. During the execution of this plan, there
+  were several issues encountered as a result of the complexity of the change
+  case and the somewhat lacking changeability of the design requiring much new
+  code to be written. The time taken to implement the change case was roughly 50 minutes.
+  The overall impact of the change case was mild, as the base ruleset hasn't
+  changed but the game is noticeably different. 
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -34,37 +46,87 @@ Before any code was actually written, a plan was devised describing the minimal
 amount of changes that would be required to achieve the desired change case.
 This plan is as follows.
 \begin{enumerate}
-  \item Find the \texttt{GameConfig} class
+  \item Find the \texttt{GameConfig} class.
   \item Change the value of \texttt{VERTICAL\_OUTPUT} from \texttt{true} to
-    \texttt{false}
-  \item Find the \texttt{Kalah} class
-  \item Find the \texttt{Play} method
-  \item Within the \texttt{while} loop, modify the assignment to the variable
-    \texttt{selection} to read: \texttt{selection = (playerNum == 1)
-    ? GameIO.computeMove(board, playerNum, io) : GameIO.getMove(board, playerNum, io);}
+    \texttt{false}.
   \item Find the \texttt{GameIO} class
   \item Create a new method: \texttt{public static int computeMove(Board board,
-    int playerNum, IO io)}
-  \item Implement the \texttt{computeMove} method
+    int playerNum, IO io)}.
+  \item Within this method, create a \texttt{List<Pit>} to contain the player's
+    houses returned from
+    \texttt{board.getPlayers().get(playerNum).getHouses()}.
+  \item Create three separate loops to iterate through each object in that
+    list.
+  \item In the first loop, implement logic to determine if a move exists that
+    leads to an extra move. Achieve this by comparing the number of seeds that
+    would be sown and the distance to the player's store. If equal, that move
+    leads to an extra move. Otherwise it does not.
+  \item In the second loop, implement logic to determine if a move exists that
+    leads to a capture. Achieve this by calculating where the last seed sown
+    will land and using this information to determine whether a capture occurs
+    at that location.
+  \item In the third loop, implement logic to determine the legal move that
+    exists with the lowest house number i.e. index.
+  \item Find the \texttt{Kalah} class.
+  \item Find the \texttt{Play} method.
+  \item Within the \texttt{while} loop, modify the assignment to the variable
+    \texttt{selection} to read: \texttt{selection = (playerNum == 1)
+    ? GameIO.computeMove(board, playerNum, io) : GameIO.getMove(board,
+    playerNum, io);}.
 \end{enumerate}
 
 \section{Implementing the Change Case}
 The total amount of time taken to implement the change case was timed as being 
-15 minutes and 58 seconds. During the execution of the aforementioned plan, there were some
-issues encountered. Overall, the plan was a success and it was not difficult to
-implement the change case. A breakdown of the steps carried out follows. 
+48 minutes and 50 seconds. During the execution of the aforementioned plan,
+there were various issues encountered that arose due to the complexity of
+the change case. In particular, implementing the base logic for the BMF bot
+proved troublesome and the change plan did not convey in enough detail how
+this should be done; thereby requiring me as a developer to figure it out on
+the spot. Although there was a lot of new code to be written, a large majority
+of that code was constrained to a single method which made it easier to
+manage. A breakdown of each step in the change plan follows.
 \begin{enumerate}
+  \item No issues in finding the \texttt{GameConfig} class.
+  \item No issues in changing the value of \texttt{VERTICAL\_OUTPUT}.
+  \item No issues in finding the \texttt{GameIO} class.
+  \item No issues in creating the \texttt{computeMove} method.
+  \item No issues in creating a \texttt{List<Pit>} or invoking the required
+    methods to obtain a value for it.
+  \item No issues in creating the loops.
+  \item In the first loop, some difficulties arose with implementing the
+    comparison condition. Particularly with regard to moves that sow enough
+    seeds to circle around the board, passing both player's houses.
+  \item In the second loop, it was difficult to calculate the position at which
+    the last seed of a potential move would be sown. Particularly with regard
+    to how the opposing player's store is skipped when sowing seeds that circle
+    the board.
+  \item No issues in implementing the logic for the third loop.
   \item No issues in finding the \texttt{Kalah} class.
+  \item No issues in finding the \texttt{Play} method.
+  \item No issues in modifying the assignment of \texttt{selection}.
 \end{enumerate}
 
 \section{Impact of the Change Case}
 On a scale from \textit{0.0} to \textit{1.0}, the impact of this change case is
-\textit{0.3}. Although the rules of the \textit{Kalah} are preserved and the
-overall functionality of the game is preserved, the replacement of the second
-player with a simple AI changes the game from being multi-player to being
-single-player.
+\textit{0.3}. Although the rules of \textit{Kalah} are preserved and the
+overall functionality of the game remains largely unchanged, the replacement 
+of the second player with a simple AI changes the game from being multi-player 
+to being single-player.
 
 \section{Changeability Assessment}
+Implementing this change case required a large amount of new code to be
+written, and this exposed some gaps in the changeability of the design. This
+change case was implemented on top of a previous change case
+\cite{a4-change-case}, and in that instance the design showed a good level of 
+changeability. However, due to a lack of factorisation of functionality related
+to determining different move outcomes (i.e. gaining an extra move or executing
+a capture), this aspect of the design did not have good changeability and that
+made this change case more difficult to implement. If a future developer wishes 
+to change the conditions that lead to an extra move or a capture they will need 
+to significantly alter the design and doing so will not be a straightforward process, 
+as I have discovered in implementing this change case. So, contrary to claims made 
+previously \cite{a3-design}, this design of Kalah only \textit{partially} lends itself 
+to changeability and could be improved to be more changeable.
 
 \begin{thebibliography}{00}
   \bibitem{a3-design} M. Eden ``SOFTENG 701 - Assignment 3 - Submission``,
