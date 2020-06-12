@@ -10,8 +10,8 @@ public class GameIO {
     /*
     * Checks if emptying a given house of seeds would result in another move for that player
     */
-    private static boolean checkExtraTurn(Board board, Pit house, int playerNum) {
-        List<Pit> playerHouses = board.getPlayers().get(playerNum).getHouses();
+    private static boolean checkExtraTurn(Board board, House house, int playerNum) {
+        List<House> playerHouses = board.getPlayers().get(playerNum).getHouses();
         return (house.getSeeds() % ((GameConfig.NUM_HOUSES + 1) * 2)
                 == (GameConfig.NUM_HOUSES + 1 - (playerHouses.indexOf(house) + 1)));
     }
@@ -19,7 +19,7 @@ public class GameIO {
     /*
     * Checks if emptying a given house of seeds would result in a capture for that player
     */
-    private static boolean checkForCapture(Board board, List<Pit> playerHouses, Pit house) {
+    private static boolean checkForCapture(Board board, List<House> playerHouses, Pit house) {
 
         List<Pit> pits = board.getPits();
 
@@ -41,9 +41,9 @@ public class GameIO {
 
     public static int computeMove(Board board, int playerNum, IO io) {
 
-        List<Pit> playerHouses = board.getPlayers().get(playerNum).getHouses();
+        List<House> playerHouses = board.getPlayers().get(playerNum).getHouses();
 
-        for (Pit house : playerHouses) {
+        for (House house : playerHouses) {
             if (house.getSeeds() == 0) continue;
             if (checkExtraTurn(board, house, playerNum)) {
                 io.println(
@@ -53,7 +53,7 @@ public class GameIO {
             }
         }
 
-        for (Pit house : playerHouses) {
+        for (House house : playerHouses) {
             if (house.getSeeds() == 0) continue;
             if (checkForCapture(board, playerHouses, house)) {
                 io.println(
@@ -65,7 +65,7 @@ public class GameIO {
 
         // If there is no possibility for extra move or capture, pick
         // the first legal house with lowest number for the move
-        for (Pit house : playerHouses) {
+        for (House house : playerHouses) {
             if (!house.isEmpty()) {
                 io.println(
                         String.format("Player P%d (Robot) chooses house #%d because it is the first legal move",
@@ -163,10 +163,10 @@ public class GameIO {
      * Constructing a string for the houses for printing the board
      * Needs to print out one player from left to right, and the other player from right to left
      */
-    public static String formatHousesAsString(List<Pit> houses, boolean isPlayerTwo) {
+    public static String formatHousesAsString(List<House> houses, boolean isPlayerTwo) {
         StringBuilder out = new StringBuilder("|");
         if (!isPlayerTwo) {
-            for (Pit house : houses) {
+            for (House house : houses) {
                 out.append(String.format(" %d[%2d] |", houses.indexOf(house) + 1,
                         house.getSeeds()));
             }

@@ -40,7 +40,7 @@ public class Board {
         boolean bonusTurn = false;
 
         // Clear the pit
-        pits.get(pitsIndex).clearSeeds();
+        ((House) pits.get(pitsIndex)).clearSeeds();
         pitsIndex++;
 
         // Distribute seeds through all other pits until none are left
@@ -74,7 +74,7 @@ public class Board {
 
                 // Evaluate if a capture takes place (really need to ensure that captures only happen for a player's
                 // own pit)
-                Pit oppositePit = pits.get(pits.size() - 2 - pitsIndex);
+                House oppositePit = (House) pits.get(pits.size() - 2 - pitsIndex);
                 if (pit.getSeeds() == 0 && oppositePit.getSeeds() != 0) {
                     pits.get((playerNum + 1) * GameConfig.NUM_HOUSES + playerNum)
                             .incrementSeeds(oppositePit.getSeeds() + GameConfig.SEED_LOSS_PER_PIT);
@@ -97,8 +97,8 @@ public class Board {
     public void cleanup() {
         // Needs to empty out all the houses and put remaining seeds in player stores
         for (Player player : players) {
-            Pit store = player.getStore();
-            for (Pit house : player.getHouses()) {
+            Store store = player.getStore();
+            for (House house : player.getHouses()) {
                 store.incrementSeeds(house.getSeeds());
                 house.clearSeeds();
             }
