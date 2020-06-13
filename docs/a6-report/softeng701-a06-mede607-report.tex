@@ -73,9 +73,15 @@ player input and game output. This was intentional at the time as I had been
 following a game design pattern I used in a previous project that used
 a similar context (the context being a local multiplayer command-line Java game).
 This decision did not support changeability from a design perspective, if we
-consider that violating one of the SOLID principles reduces changeability. On
-the other hand, if we consider the changeability index (CI)
-\cite{lec01b-changeability} for 
+consider that violating one of the SOLID principles reduces changeability. 
+
+On the other hand, if we consider the changeability index (CI)
+\cite{lec01b-changeability} for change cases that might involve changing player
+input and game output, then we can consider that this approach provides
+good changeability. The reason being that more classes are changed when
+input/output are separated, and so that increases the CI if we assume that
+other variables (total number of classes and impact of change case) are kept
+constant.
 
 \section{Understanding Changeability through Change Cases}
 Although the changeability of a design can be evaluated through looking the
