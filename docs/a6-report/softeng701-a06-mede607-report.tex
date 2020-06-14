@@ -83,12 +83,8 @@ input/output are separated, and so that increases the CI if we assume that
 other variables (total number of classes and impact of change case) are kept
 constant.
 
-Other aspects of my design also had issues, such as my decision to merge the
-concepts of \textit{House} and \textit{Store} into a single \texttt{Pit} class.
-This was highlighted 
-
 \section{Understanding Changeability through Change Cases}
-Although the changeability of a design can be evaluated through looking the
+Although the changeability of a design can be evaluated through looking at the
 design principles being followed, ultimately, whether a design is changeable
 can only be seen through the experience of attempts to change it. That is to
 say, change cases. The reason why this is the case is that changeability is
@@ -130,8 +126,8 @@ changeability.
 Yet, two change cases is not sufficient for claiming that a design has good
 changeability. It is necessary to look at a variety of change cases in order to
 truly assess changeability. Several additional change cases have been suggested
-for Kalah, and from a rather extensive list I have narrowed ones that
-I consider of great interest. Change cases that I do not consider interesting
+for Kalah, and from an extensive list I have narrowed down ones that
+I consider of interest. Change cases that I do not consider interesting
 and were thus excluded are ones that seem to be more concerned with changing
 the fundamental rules of Kalah rather than exploring changes in program design
 (i.e. increasing the number of players beyond 2, giving multiple rows to each
@@ -142,7 +138,7 @@ change case, the ones I will be considering are listed below.\newline
   \item[\textbf{INF}] Tracking statistical information about the player, such
     as games won, average number of seeds in a winning game, average number of
     captures in a game, etc.
-  \item[\textbf{S/L}] Save/load feature for individual games
+  %\item[\textbf{S/L}] Save/load feature for individual games
   \item[\textbf{CR}] Different capture rules
   %\item[\textbf{DIR}] Direction (clockwise or counter-clockwise) that seeds are
   %  sown around the board
@@ -151,24 +147,23 @@ change case, the ones I will be considering are listed below.\newline
 \end{itemize}
 The change cases \textbf{NS} and \textbf{NH} would be expected to be trivial
 for most designs, and is in fact especially trivial in my design. They only require
-a single edit each to one class, \texttt{GameConfig}. So we could confidently
-say that for those change cases my design has good changeability, as there is
+a single edit each to one class, \texttt{GameConfig}. So we could say that for those 
+change cases my design has good changeability, as there is
 merely only 1 or 2 \textit{characters} (not lines) of code changed. However,
-this should be expected from such simple change cases. If we then consider
-more advance change cases, such as \textbf{INF} or \textbf{S/L}, the discussion
-around the changeability of the design becomes more interesting. Both change
-cases are concerned with preserving some data after the program exits. One
+this should be expected from such simple change cases. If we then consider a
+more advanced change case, such as \textbf{INF}, the discussion
+around the changeability of the design becomes more interesting. The change
+case is concerned with preserving some data after the program exits and one
 could imagine several implementations to achieve this, but I am going to
-suggest ones for the sake of my argument. For \textbf{INF}, consider an
+suggest one for the sake of my argument. Consider an
 approach that writes to a file when certain events occur (such as
 winning/losing a game or performing a capture). The original design would be
 left largely untouched, save for some method injections which don't affect the
 changeability as they are new code. For example, when determining the winner of
-a game, it would be simple to add in a method to write that information to
-a file before the return statement. Similar methods could be added in other
+a game in \texttt{printGameResult}, it would be simple to add in a method to write 
+the relevant information to a file. Similar methods could be added in other
 parts of the design, such as when a player receives a bonus turn or performs
-a capture. For \textbf{S/L}, consider an approach that serialises objects into file storage, and is able to load them
-from a file and deserialise them. 
+a capture.
 
 By contrast, I could say that my design does not support \textbf{CR} very well due to the messy
 implementation of captures. That is to say, my design does not make use of
@@ -177,19 +172,26 @@ but rather relies on a set of conditionals within a loop to determine when
 a capture takes place. As such, this functionality is not isolated from other
 possible moves, so a programmer implementing such a change case would need to
 first wrap their head around my implementation. That being said, the definition
-of changeability used here is only concerned with the execution of changes
+of changeability we are using is only concerned with the execution of changes
 \textit{once those changes have been identified}. A programmer could spend an
 enormous amount of time figuring out those changes, but so long as the changes
 were small, the design would still be considered changeable. With this in mind,
 although I can look at the code and complain about the way it is written, it
-would appear that there is in fact a good argument here for changeability.
+would appear that there is in fact still a good argument here for changeability.
 After all, the implementation of a capture only exists within a single method
 in a single class in my design.
 
 \section{Concluding Statements}
 After implemeting and modifying my design, it turns out that changeability is 
 not as straightforward as I first thought. There are many approaches one can
-take to ensuring good levels of changeability, and
+take to ensuring good levels of changeability, and several pieces of design
+advice that can be used to help achieve this as well. When considering the
+changeability of my design through such advice, it would seem to fall short.
+Yet, the narrow definition of changeability means that my design still has good
+changeability, as can be seen throughout various change cases. In conclusion,
+although my understanding of changeability has grown over this course, it
+appears that my initial design, though somewhat unorthodox, had good
+changeability.
 
 \begin{thebibliography}{00}
   \bibitem{a3-design} M. Eden, ``Implementing Kalah with a Changeable
@@ -199,13 +201,13 @@ take to ensuring good levels of changeability, and
     change case'', in Canvas, SOFTENG 701, Assignment 4 Submission
   \bibitem{a5-change-case} M. Eden, ``Implementing the Best move or First robot
     change case'', in Canvas, SOFTENG 701, Assignment 5 Submission
-  \bibitem{meyer} B. Meyer, ``Reusability: The Case for Object-Oriented
-    Design'', in IEEE Software, vol. 4, no. 2, pp. 50-64, March 1987, 
-    doi: 10.1109/MS.1987.230097
+  %\bibitem{meyer} B. Meyer, ``Reusability: The Case for Object-Oriented
+   % Design'', in IEEE Software, vol. 4, no. 2, pp. 50-64, March 1987, 
+    %doi: 10.1109/MS.1987.230097
   \bibitem{lec01b-changeability} E. Tempero ``SOFTENG 701 - Lecture 01b - Changeability'',  in Canvas, SOFTENG 701, May 2020
-  \bibitem{lec03-design} E. Tempero ``SOFTENG 701 - Lecture 03 - How to improve design'',  in Canvas, SOFTENG 701, May 2020
-  \bibitem{lec04-measurement} E. Tempero ``SOFTENG 701 - Lecture 04 - Learning to Measure'',  in Canvas, SOFTENG 701, May 2020
+  %\bibitem{lec03-design} E. Tempero ``SOFTENG 701 - Lecture 03 - How to improve design'',  in Canvas, SOFTENG 701, May 2020
+  %\bibitem{lec04-measurement} E. Tempero ``SOFTENG 701 - Lecture 04 - Learning to Measure'',  in Canvas, SOFTENG 701, May 2020
   \bibitem{lec07-solid} E. Tempero ``SOFTENG 701 - Lecture 07 - SOLID Design Prinicples'',  in Canvas, SOFTENG 701, May 2020
-  \bibitem{lec09-counting} E. Tempero ``SOFTENG 701 - Lecture 09 - Counting Objects to evaluate object-oriented design'',  in Canvas, SOFTENG 701, June 2020
+  %\bibitem{lec09-counting} E. Tempero ``SOFTENG 701 - Lecture 09 - Counting Objects to evaluate object-oriented design'',  in Canvas, SOFTENG 701, June 2020
 \end{thebibliography}
 \end{document}
